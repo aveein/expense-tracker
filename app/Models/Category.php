@@ -19,4 +19,10 @@ class Category extends Model
         $query->where('status', 1);
     }
 
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class,'category_id');
+
+    }
+
 }

@@ -11,6 +11,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('date-wise/transaction',[App\Http\Controllers\HomeController::class,'getDateWise'])->name('transactions.date-wise');
 
 Route::resource('categories',CategoryController::class);
 Route::resource('transactions',TransactionController::class);

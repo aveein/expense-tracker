@@ -21,6 +21,7 @@ class TransactionController extends Controller
     {
         //
         $data['categories'] = Category::active()->get();
+      
         return view('transactions.index',$data);
     }
 
@@ -34,6 +35,7 @@ class TransactionController extends Controller
                  })
                  ->editColumn('image', function($data){
                     $image = asset('storage/'.$data->image);
+
                     return $data->image ? "<img src=$image width='80%' height='50px'>" : 'No Image';
                  })
                  ->editColumn('action', function($data){
