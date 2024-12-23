@@ -62,11 +62,15 @@
 
     <ul class="menu-inner py-1">
       <!-- Dashboards -->
-      <li class="menu-item active ">
-        <a href="javascript:void(0);" class="menu-link ">
+      <li class="menu-item @if (Route::is('home'))
+        active
+      @endif ">
+        <a href="{{route('home')}}" class="menu-link ">
           <i class="menu-icon tf-icons bx bx-home-smile"></i>
-          <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
-          <span class="badge rounded-pill bg-danger ms-auto">5</span>
+
+          <div class="text-truncate" data-i18n="Dashboards">Dashboard</div>
+
+          {{-- <span class="badge rounded-pill bg-danger ms-auto">5</span> --}}
         </a>
 
       </li>
@@ -77,7 +81,9 @@
       <!-- Components -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text">Category Management</span></li>
       <!-- Cards -->
-      <li class="menu-item">
+      <li class="menu-item @if (Route::is('categories.*'))
+        active
+      @endif">
         <a href="{{route('categories.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-collection"></i>
           <div class="text-truncate" data-i18n="Basic">Categories</div>
@@ -87,9 +93,13 @@
       <!-- Forms & Tables -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text">Transaction Management</span></li>
       <!-- Tables -->
-      <li class="menu-item">
-        <a href="tables-basic.html" class="menu-link">
+      <li class="menu-item @if (Route::is('transactions.*'))
+        active
+      @endif">
+        <a href="{{route('transactions.index')}}" class="menu-link">
+
           <i class="menu-icon tf-icons bx bx-table"></i>
+
           <div class="text-truncate" data-i18n="Tables">Transactions</div>
         </a>
       </li>
