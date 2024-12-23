@@ -64,7 +64,8 @@ class CategoryController extends Controller
             ]);
 
             return response()->json([
-                'message'=>'Successfully Created!'
+                'message'=>'Successfully Created!',
+                'reset' => true
             ]);
         }catch(\Exception $e){
             return response()->json([
@@ -105,6 +106,10 @@ class CategoryController extends Controller
             'title' => $request->title,
             'status'=>isset($request->status) ? $request->status : false
         ]);
+        return response()->json([
+            'message'=>'Successfully updated!',
+            'reset' => false
+        ]);
         }
         catch(\Exception $e){
             return response()->json([
@@ -119,7 +124,7 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-       
+
         //
         try{
             Category::destroy($id);

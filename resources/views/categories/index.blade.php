@@ -134,6 +134,7 @@ $(document).on('click','.delete',function(){
 });
 
 $('#form_submit').on('submit',function(e){
+    $('.invalid-feedback').text('')
     e.preventDefault();
     var form = $(this);
     $.ajax({
@@ -141,7 +142,10 @@ $('#form_submit').on('submit',function(e){
         method:$(this).attr('method'),
         data:$( this ).serialize(),
         success:function(e){
+            if(e.reset){
+
             form.trigger('reset');
+            }
             datatable.ajax.reload();
         },
         error:function(e){

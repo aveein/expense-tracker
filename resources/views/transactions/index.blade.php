@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Category Management')
+@section('title','Transaction Management')
 
 @push('css')
 
@@ -16,9 +16,9 @@
                 <form action="{{route('transactions.store')}}" method="POST" id="form_submit" enctype="multipart/form-data">
                   @csrf
                 <div class="mb-4">
-                    <label for="exampleFormControlSelect1" class="form-label">Select Categories</label>
-                    <select name="category_id" class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-                      <option selected>Select Category</option>
+                    <label for="category_id" class="form-label">Select Categories</label>
+                    <select name="category_id" class="form-select" id="category_id" aria-label="Default select example">
+                      <option value="" selected>Select Category</option>
                       @foreach ($categories as $category )
 
                       <option value="{{$category->id}}">{{$category->title}}</option>
@@ -28,11 +28,11 @@
                   </div>
 
                   <div class="mb-4">
-                    <label for="title" class="form-label">Amount</label>
-                    <input type="text" name="amount" class="form-control" id="title" placeholder="Enter Amount">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="text" name="amount" class="form-control" id="amount" placeholder="Enter Amount">
                   </div>
                   <div class="mb-4">
-                    <label for="exampleFormControlSelect2" class="form-label">Select Type</label>
+                    <label for="type" class="form-label">Select Type</label>
                     <div class="col-md">
                         <small class="text-light fw-medium d-block">(Income or Expense)</small>
                         <div class="form-check form-check-inline mt-3">
@@ -51,9 +51,9 @@
                             type="radio"
                             name="type"
                             value="expense"
-                            id="inlineRadio2"
+                            id="type"
                             value="option2" />
-                          <label class="form-check-label" for="inlineRadio2">Expense</label>
+                          <label class="form-check-label" for="type">Expense</label>
                         </div>
 
                       </div>
@@ -93,15 +93,33 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Transaction Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="modal-body" class="text-center">
+                ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" style="margin-right: 5px !important" data-bs-dismiss="modal">Close</button>
+                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                </div>
+            </div>
+            </div>
+        </div>
 
         <div class="col-md-8">
             <div class="card">
                 <div class="d-flex justify-content-between align-items-center">
 
-                    <h5 class="card-header">Category List</h5>
+                    <h5 class="card-header">Transaction List</h5>
                     <div class="card-header">
 
-                        <button onclick="window.location.href='{{route('categories.index')}}'" class="btn btn-primary btn-sm">Add Category</button>
+                        <button onclick="window.location.href='{{route('transactions.index')}}'" class="btn btn-primary btn-sm">Add Transaction</button>
                     </div>
                 </div>
 
@@ -111,8 +129,10 @@
                             <thead>
                                 <tr>
                                     <th>S.N</th>
-                                    <th>Title</th>
-                                    <th>Status</th>
+                                    <th>Image</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
                                     <th>Created Date.</th>
                                     <th>Action</th>
                                 </tr>
@@ -131,9 +151,11 @@
 <script src="../assets/js/pages-account-settings-account.js"></script>
 <script>
 
+
+
    var datatable = new DataTable('#example', {
         ajax: {
-        url: '{{route("categories.data")}}',
+        url: '{{route("transactions.data")}}',
         type: 'POST',
         headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -141,10 +163,13 @@
     },
     columns: [
         { data: 'id' },
-        { data: 'title' },
-        { data: 'status' },
+        { data: 'image',name:'id' },
+        { data: 'category_id' },
+        { data: 'type' },
+        { data: 'amount' },
+
         { data: 'created_at' },
-        { data: 'action',name:'title' }
+        { data: 'action',name:'id' }
     ],
     processing: true,
     serverSide: true,
@@ -152,31 +177,57 @@
         "regex": false
       }
 });
+$(document).on('click','.view',function(){
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+    keyboard: false
+    })
+    myModal.show()
+    var url = "{{route('transactions.edit',':id')}}"
+    url =url.replace(':id',$(this).data('id'))
+    $.ajax({
+        url: url,
+        success:function(data){
+            $('#modal-body').html('');
 
+            if(data.image){
+                let image = `{{ asset('storage/${data.image}')}}`
+                $('#modal-body').append(`<img src="${image}" width="100%">`)
+            }
+            $('#modal-body').append(`<p class="ml-3 fw-bold"> Amount: ${data.amount} </p>`)
+            $('#modal-body').append(`<p class="ml-3 fw-bold"> Type: ${data.type} </p>`)
+
+
+        }
+    });
+
+})
 $(document).on('click','.edit',function(){
-    $('#update_title').text('Update Category')
-    var url = "{{route('categories.edit',':id')}}"
+    $('#update_title').text('Update Transaction')
+    var url = "{{route('transactions.edit',':id')}}"
 
     url =url.replace(':id',$(this).data('id'))
 
-    let update_url = "{{route('categories.update',':id')}}"
+    let update_url = "{{route('transactions.update',':id')}}"
     update_url =update_url.replace(':id',$(this).data('id'))
 
     $('#form_submit').attr('action',update_url)
-    $('#form_submit').attr('method','put')
+    $('#form_submit').attr('method','post')
+    $('#form_submit').append('@method("put")')
 
     $.ajax({
         url: url,
         success:function(data){
 
-            $('#title').val(data.title)
-            data.status ? $('#flexSwitchCheckDefault').attr('checked', 'checked') : $('#flexSwitchCheckDefault').removeAttr('checked') ;
+           $('#amount').val(data.amount);
+           data.type === 'income' ? $('#inlineRadio1').attr('checked',true) : $('#type').attr('checked',true);
+
+           $(`#category_id option[value="${data.category_id}"]`).prop('selected',"selected").trigger('change');
         }
     });
 });
 
 $(document).on('click','.delete',function(){
-    var url = "{{route('categories.destroy',':id')}}"
+    var url = "{{route('transactions.destroy',':id')}}"
 
     url =url.replace(':id',$(this).data('id'))
 
@@ -196,15 +247,26 @@ $(document).on('click','.delete',function(){
 $('#form_submit').on('submit',function(e){
     e.preventDefault();
     var form = $(this);
+    $('.invalid-feedback').text('')
+    var formData = new FormData(this);
+
 
     $.ajax({
         url:$(this).attr('action'),
         method:$(this).attr('method'),
-        data:new FormData(this),
-        processData: false,
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data:formData,
+        cache: false,
         contentType: false,
+        processData: false,
         success:function(e){
-            form.trigger('reset');
+            if(e.reset){
+
+                form.trigger('reset');
+            }
+
             datatable.ajax.reload();
         },
         error:function(e){
@@ -214,7 +276,7 @@ $('#form_submit').on('submit',function(e){
                 $.each( e.responseJSON.errors, function( index, value ) {
                     var ele = $('#'+index);
                     ele.addClass('is-invalid')
-                    ele.parent().append(`<div class="invalid-feedback">${value}</span>`)
+                    ele.closest('.mb-4').append(`<div class="invalid-feedback">${value}</span>`)
                     console.log( index + ": " + value );
                 });
             }
