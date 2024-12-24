@@ -56,8 +56,7 @@ id="layout-navbar">
                 </div>
               </div>
               <div class="flex-grow-1">
-                <h6 class="mb-0">John Doe</h6>
-                <small class="text-muted">Admin</small>
+                <h6 class="mb-0">{{ Auth::user()->name }}</h6>
               </div>
             </div>
           </a>
@@ -65,7 +64,7 @@ id="layout-navbar">
         <li>
           <div class="dropdown-divider my-1"></div>
         </li>
-        <li>
+        {{-- <li>
           <a class="dropdown-item" href="#">
             <i class="bx bx-user bx-md me-3"></i><span>My Profile</span>
           </a>
@@ -81,13 +80,24 @@ id="layout-navbar">
               <span class="flex-shrink-0 badge rounded-pill bg-danger">4</span>
             </span>
           </a>
-        </li>
+        </li> --}}
         <li>
           <div class="dropdown-divider my-1"></div>
         </li>
+        <a class="dropdown-item" href="{{ route('logout') }}"
+            onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+            {{ __('Logout') }}
+        </a>
         <li>
-          <a class="dropdown-item" href="javascript:void(0);">
+          <a class="dropdown-item" href="{{ route('logout') }}"   onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+
             <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
           </a>
         </li>
       </ul>
