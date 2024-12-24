@@ -24,7 +24,7 @@ services:
     container_name: php
     volumes:
       - .:/var/www/app:delegated
-      - ./env/.env:/var/www/app/.env
+      - ./env/.config:/var/www/app/.env
     expose:
       - "9000"
     depends_on:
