@@ -141,6 +141,9 @@ $(document).on('click','.delete',function(){
         success:function(data){
             success()
             datatable.ajax.reload();
+        },
+        error:function(){
+            error()
         }
     });
 });
