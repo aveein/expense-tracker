@@ -1,14 +1,29 @@
+# Laravel Project
+
+Expense Tracker is a user-friendly application designed to help individuals and businesses manage their finances effectively. With features to track income, monitor expenses, and visualize spending habits, the application ensures financial transparency and control.
 
 
+## Requirements
 
-## Code of Conduct
+Before getting started, ensure you have the following installed on your system:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP >= 8.0
+- Composer
+- Laravel
+- MySQL (or another supported database)
+- Node.js and npm (if the project uses frontend scaffolding)
 
-## Security Vulnerabilities
+## Installation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Follow these steps to set up the project on your local machine:
 
-## License
+1. composer install
+2. setup database in .env
+3. php artisan migrate
+4. php artisan db:seed
+5. php artisan serve
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## user credentials
+
+email : admin@admin.com
+password : password
