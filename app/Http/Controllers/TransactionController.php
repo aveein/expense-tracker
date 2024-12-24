@@ -21,11 +21,12 @@ class TransactionController extends Controller
     {
         //
         $data['categories'] = Category::active()->get();
-      
+
         return view('transactions.index',$data);
     }
 
     public function data(){
+
 
         $model = Transaction::query()->with('category');
 
@@ -46,11 +47,19 @@ class TransactionController extends Controller
                  ->editColumn('type', '<span class="badge px-2 bg-label-{{ $type == "income" ? "success" : "danger"}}" text-capitalized="">{{$type}}</span> ')
 
                  ->filter(function ($query) {
-                    // if(request()->has('search')){
-                    //      if(Str::lower((request()->search['value'])) == 'active'){
-                    //          $query->orWhere('status',1);
-                    //      }
-                    // }
+
+
+
+
+                    if(request()->has('category_id') && !is_null(request()->category_id) ){
+                         $query->where('category_id',request()->category_id);
+                    }
+
+                    if(request()->has('date')){
+                        $format_date = $this->formatDate(request()->date);
+                       
+                        $query->whereBetween('created_at',[$format_date['from_date'],$format_date['to_date']]);
+                    }
 
 
                  },true)
@@ -58,6 +67,18 @@ class TransactionController extends Controller
                 ->make(true);
     }
 
+    public function formatDate($date){
+
+        $two_date = explode(' - ',$date);
+
+        $data['from_date'] = explode('/',$two_date[0]);
+        $data['to_date'] = explode('/',$two_date[1]);
+        return [
+            'from_date'=>end($data['from_date']).'-'.head($data['from_date']).'-'.$data['from_date'][1]." 00:00:00",
+            'to_date'=>end($data['to_date']).'-'.head($data['to_date']).'-'.$data['to_date'][1]." 23:59:59",
+        ];
+
+    }
     /**
      * Show the form for creating a new resource.
      */

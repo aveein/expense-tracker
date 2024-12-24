@@ -5,6 +5,7 @@
 @push('css')
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endpush
 @section('content')
     <div class="row">
@@ -93,6 +94,8 @@
             </div>
         </div>
 
+
+
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -113,6 +116,7 @@
         </div>
 
         <div class="col-md-8">
+
             <div class="card">
                 <div class="d-flex justify-content-between align-items-center">
 
@@ -122,6 +126,41 @@
                         <button onclick="window.location.href='{{route('transactions.index')}}'" class="btn btn-primary btn-sm">Add Transaction</button>
                     </div>
                 </div>
+
+
+                    <div class="card-header">
+                        <form action="{{route('transactions.date-wise')}}" method="GET" id="date_range">
+                            <div class="col-md-12 d-flex align-items-center">
+                                <div class="col-2 mt-3">
+                                    <p class="fw-bold">Date Range (Bar)</p>
+                                </div>
+
+                                <div class="col-3 p-2">
+                                    <select name="type" class="form-select" id="category_filter_id">
+                                        <option value="">Select Category</option>
+                                        @foreach ($categories as $category )
+                                            <option value="{{$category->id}}">{{$category->title}}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+
+                                <div class="col-4">
+
+                                    <input type="text" name="dates" class="form-control" id="date">
+                                </div>
+
+                                <div class="col-2 p-2">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+
+                            </div>
+                        </form>
+
+
+                    </div>
+
+
 
                 <div class="table-responsive text-nowrap">
                     <div class="card-body p-4">
@@ -147,10 +186,21 @@
     </div>
 @endsection
 @push('js')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script src="../assets/js/pages-account-settings-account.js"></script>
+
+
+<script>
+    $('input[name="dates"]').daterangepicker();
+</script>
+
 <script>
 
+
+   var filter = false;
 
 
    var datatable = new DataTable('#example', {
@@ -177,6 +227,43 @@
         "regex": false
       }
 });
+
+$('#date_range').on('submit',function(e){
+        e.preventDefault();
+        datatable.destroy()
+        datatable = new DataTable('#example', {
+                ajax: {
+                url: '{{route("transactions.data")}}',
+                data:{
+                    date:$('#date').val(),
+                    category_id:$('#category_filter_id').val(),
+                    filter:filter
+                },
+                type: 'POST',
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            },
+            columns: [
+                { data: 'id' },
+                { data: 'image',name:'id' },
+                { data: 'category_id' },
+                { data: 'type' },
+                { data: 'amount' },
+                { data: 'created_at' },
+                { data: 'action',name:'id' }
+            ],
+            processing: true,
+            serverSide: true,
+            search: {
+                "regex": false
+            }
+        });
+
+
+    })
+
+
 $(document).on('click','.view',function(){
     var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
     keyboard: false
