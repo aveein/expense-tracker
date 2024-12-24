@@ -21,11 +21,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         Schema::disableForeignKeyConstraints();
-        $this->call([
-        	UserSeeder::class,
-        	CategorySeeder::class,
-        	TransactionSeeder::class,
-    	]);
+        if(User::count() === 0){
+            $this->call([
+                UserSeeder::class,
+                CategorySeeder::class,
+                TransactionSeeder::class,
+            ]);
+        }
+
         Schema::enableForeignKeyConstraints();
     }
 }

@@ -60,11 +60,11 @@
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-heading fw-bold">sneat</span>
+                  <span class="app-brand-text demo text-heading fw-bold">Expense Tracker</span>
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-1">Adventure starts here 🚀</h4>
+              <h4 class="mb-1">Start your Expense Tracker🚀</h4>
               <p class="mb-6">Make your app management easy and fun!</p>
 
               <form method="POST" action="{{ route('register') }}">
@@ -144,10 +144,10 @@
                 </div>
                 <button class="btn btn-primary d-grid w-100">Sign up</button>
               </form>
-                
+
               <p class="text-center">
                 <span>Already have an account?</span>
-                <a href="auth-login-basic.html">
+                <a href="{{route('login')}}">
                   <span>Sign in instead</span>
                 </a>
               </p>

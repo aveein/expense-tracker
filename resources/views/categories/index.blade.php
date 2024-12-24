@@ -66,10 +66,21 @@
             </div>
         </div>
     </div>
+
+
+
 @endsection
 @push('js')
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <script>
+
+  // Bootstrap toasts example
+  // --------------------------------------------------------------------
+
+
+
+
+
 
    var datatable = new DataTable('#example', {
         ajax: {
@@ -128,6 +139,7 @@ $(document).on('click','.delete',function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success:function(data){
+            success()
             datatable.ajax.reload();
         }
     });
@@ -146,12 +158,13 @@ $('#form_submit').on('submit',function(e){
 
             form.trigger('reset');
             }
+            success()
             datatable.ajax.reload();
         },
         error:function(e){
             if(e.responseJSON.errors){
                 console.log(e.responseJSON.errors)
-
+                error()
                 $.each( e.responseJSON.errors, function( index, value ) {
                     var ele = $('#'+index);
                     ele.addClass('is-invalid')

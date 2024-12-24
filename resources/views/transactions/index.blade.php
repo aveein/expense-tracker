@@ -309,6 +309,8 @@ $(document).on('click','.edit',function(){
            data.type === 'income' ? $('#inlineRadio1').attr('checked',true) : $('#type').attr('checked',true);
 
            $(`#category_id option[value="${data.category_id}"]`).prop('selected',"selected").trigger('change');
+
+           data.image ? $('#uploadedAvatar').attr('src',`{{ asset('storage/${data.image}') }}`)  :  $('#uploadedAvatar').attr('src','./assets/img/elements/12.jpg')
         }
     });
 });
@@ -326,6 +328,7 @@ $(document).on('click','.delete',function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success:function(data){
+            success()
             datatable.ajax.reload();
         }
     });
@@ -354,12 +357,14 @@ $('#form_submit').on('submit',function(e){
                 form.trigger('reset');
             }
 
+            success()
+
             datatable.ajax.reload();
         },
         error:function(e){
             if(e.responseJSON.errors){
                 console.log(e.responseJSON.errors)
-
+                error()
                 $.each( e.responseJSON.errors, function( index, value ) {
                     var ele = $('#'+index);
                     ele.addClass('is-invalid')

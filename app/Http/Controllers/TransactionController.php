@@ -57,7 +57,7 @@ class TransactionController extends Controller
 
                     if(request()->has('date')){
                         $format_date = $this->formatDate(request()->date);
-                       
+
                         $query->whereBetween('created_at',[$format_date['from_date'],$format_date['to_date']]);
                     }
 
@@ -146,7 +146,10 @@ class TransactionController extends Controller
 
         try{
             $transaction = Transaction::findOrFail($id);
-            if($request->has('image')) $path= $this->uploadImage($request->file('image'));
+
+
+
+            if($request->has('image')) $path= $this->uploadImage($request->file('image'),$transaction->image);
 
             $transaction->update([
             'category_id' => $request->category_id,

@@ -59,12 +59,12 @@
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-heading fw-bold">sneat</span>
+                  <span class="app-brand-text demo text-heading fw-bold">Expense Tracker</span>
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-1">Welcome to sneat! 👋</h4>
-              <p class="mb-6">Please sign-in to your account and start the adventure</p>
+              <h4 class="mb-1">Welcome to Expense Tracker! 👋</h4>
+              <p class="mb-6">Please sign-in to your account and start to track your expense</p>
 
               <form method="POST" action="{{ route('login') }}" id="formAuthentication" class="mb-6" >
                @csrf

@@ -135,7 +135,7 @@
 
     @stack('css')
 
-      
+
   </head>
 
   <body>
@@ -186,6 +186,26 @@
           <!-- Content wrapper -->
         </div>
         <!-- / Layout page -->
+
+        <div class="bs-toast toast toast-placement-ex m-2 fade bg-success top-0 end-0 hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" id="success">
+            <div class="toast-header">
+              <i class="bx bx-bell me-2"></i>
+              <div class="me-auto fw-medium">Success</div>
+              <small>1 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">Process Successful</div>
+          </div>
+
+          <div class="bs-toast toast toast-placement-ex m-2 fade bg-danger top-0 end-0 hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000" id="error">
+            <div class="toast-header">
+              <i class="bx bx-bell me-2"></i>
+              <div class="me-auto fw-medium">Something Went Wrong</div>
+              <small>1 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">Error Occured</div>
+          </div>
       </div>
 
       <!-- Overlay -->
@@ -218,7 +238,21 @@
 
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+        function success(){
+            const toastLiveExample = document.getElementById('success')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show()
 
+        }
+
+        function error(){
+            const toastLiveExample_e = document.getElementById('error')
+            const toastBootstrap_e = bootstrap.Toast.getOrCreateInstance(toastLiveExample_e)
+            toastBootstrap_e.show()
+
+        }
+    </script>
     @stack('js')
   </body>
 </html>
